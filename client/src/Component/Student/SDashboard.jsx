@@ -161,7 +161,7 @@ export default function Dashboard() {
                   <br />
                   <span className="text-shadow">
                     {myDetails.sname
-                      ? myDetails.sname.split(" ")[0].toUpperCase()
+                      ?`Hello ${myDetails.sname.split(" ")[1].toUpperCase()}`
                       : ""}
                   </span>{" "}
                   <br />
