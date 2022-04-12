@@ -20,7 +20,7 @@ export const checkLogger = async (data) => {
 export const facultyFormSet = async (data) => {
   console.log("in facultyFormSet >>>", data);
   
-  return await axios.post(`${usersUrl}/facultyFormSet`,data,{headers:{Autherization:token()}});
+  return await axios.post(`${usersUrl}/facultyFormSet`);
 };
 
 
