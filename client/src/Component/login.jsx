@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import logo from "./../Assets/Images/logo.jpeg";
-import { Link, Redirect, useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import {
   checkLogger,
   getOneAdmin,
@@ -23,10 +23,14 @@ function Login(props) {
     status: "",
   });
 
-  useEffect(async () => {
-    const check = await isFormAllow("fromLogin");
-   console.log("::::::::",check.data)
-    setAllowForm(check.data);
+  useEffect( () => {
+
+    async function fectDta(){
+      const check = await isFormAllow("fromLogin");
+      console.log("::::::::",check.data)
+       setAllowForm(check.data);
+    }
+    fectDta();
   }, []);
 
   const history = useHistory();
@@ -211,48 +215,48 @@ function Login(props) {
             <div className="container">
               <ul className="foote_bottom_ul_amrc">
                 <li>
-                  <a href="">Home</a>
+                  <a href="#">Home</a>
                 </li>
                 <li>
-                  <a href="">About</a>
+                  <a href="#">About</a>
                 </li>
                 <li>
-                  <a href="">Services</a>
+                  <a href="#">Services</a>
                 </li>
                 <li>
-                  <a href="">Pricing</a>
+                  <a href="#">Pricing</a>
                 </li>
                 <li>
-                  <a href="">Blog</a>
+                  <a href="#">Blog</a>
                 </li>
                 <li>
-                  <a href="">Contact</a>
+                  <a href="#">Contact</a>
                 </li>
               </ul>
               {/* <!--foote_bottom_ul_amrc ends here--> */}
               <p className="text-center">
                 Copyright @2022 | Designed With by{" "}
-                <a href="#">Pankaj Aru & Dnyaneshwar Shinde</a>
+                <a href="##">Pankaj Aru & Dnyaneshwar Shinde</a>
               </p>
 
               <ul className="social_footer_ul">
                 <li>
-                  <a href="">
+                  <a href="#">
                     <i className="fi bi-facebook"></i>
                   </a>
                 </li>
                 <li>
-                  <a href="">
+                  <a href="#">
                     <i className="fi bi-twitter"></i>
                   </a>
                 </li>
                 <li>
-                  <a href="">
+                  <a href="#">
                     <i className="fi bi-linkedin"></i>
                   </a>
                 </li>
                 <li>
-                  <a href="">
+                  <a href="#">
                     <i className="fi bi-instagram"></i>
                   </a>
                 </li>
