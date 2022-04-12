@@ -122,7 +122,7 @@ function Login(props) {
       <div className="login-page">
         <div>
           <div className="fl-center loginpage box-shadow-wh text-shadow">
-            <div className="heading">hech te College OF Engineering</div>
+            <div className="heading">Welcome College OF Engineering</div>
           </div>
           <div>
             <button
