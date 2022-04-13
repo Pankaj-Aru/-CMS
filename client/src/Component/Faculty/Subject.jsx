@@ -27,22 +27,14 @@ export default function Subject() {
     var c = await check("faculty");
 
     if (c) {
+      const userData = await getOneFaculty(
+        JSON.parse(localStorage.getItem("userPersonalDetail")).fPRN
+      );
 
-      const userData = await getOneFaculty(JSON.parse(
-        localStorage.getItem("userPersonalDetail")
-        ).fPRN);
-  
+      const s = userData.data.allocateSubject;
 
-      // console.log("asas",userData.data.allocateSubject)
-
-      // const s = JSON.parse(
-      //   localStorage.getItem("userPersonalDetail")
-      // ).allocateSubject;
-const s=userData.data.allocateSubject
-
-      if(s){
+      if (s) {
         setSubjects(s);
-
 
         var subjectsString = "";
         s.map((item, i) => {
@@ -52,36 +44,14 @@ const s=userData.data.allocateSubject
               : subjectsString + item.subID;
         });
 
-
-
-
         const isSyllabusUpload = await checkSyllabusUpload(subjectsString);
-  
-        if(isSyllabusUpload.status===200){
+
+        if (isSyllabusUpload.status === 200) {
           setIsUpload(isSyllabusUpload.data);
         }
-       
-
-
       }
-  
-      }
-      
-    
-
-     
-    
-
-    
+    }
   }, [countForSylUpload, countForNewSyllabus]);
-
-
-
-
-
-
-
-
 
   function toBase64(sdata) {
     return Buffer.from(
@@ -90,33 +60,26 @@ const s=userData.data.allocateSubject
     ).toString("base64");
   }
 
-  async function operationFun(operation, filename,subname) {
-
+  async function operationFun(operation, filename, subname) {
     setMessage(" ");
     setSuccess(" ");
     if (operation === "delete") {
       const dataOneNotificaton = await deleteOneSyllabus(filename);
 
-    
-
-      if(dataOneNotificaton.status === 200){
-        SetCountForNewSyllabus(countForNewSyllabus + 1)
+      if (dataOneNotificaton.status === 200) {
+        SetCountForNewSyllabus(countForNewSyllabus + 1);
         setSuccess(`Deleted ${subname} Syllabus Doc `);
-      }else{
-  setMessage(`Problem while deleting ${subname} Syllabus Doc` )
+      } else {
+        setMessage(`Problem while deleting ${subname} Syllabus Doc`);
       }
-        
-         
     } else {
       const dataOneNotificaton = await getOneSyllabus(filename);
 
-      console.log("ll>>>>>", pdfFile);
       if (dataOneNotificaton.status === 200) {
         setpdfFile(dataOneNotificaton.data.data.data);
-        // setCou('download')
       } else {
         setpdfFile("");
-        console.log("llNot dofundd>", pdfFile);
+
         alert("File Not Found,Kindly Contact to Publisher");
       }
     }
@@ -124,14 +87,14 @@ const s=userData.data.allocateSubject
 
   async function onChangeHandler(id, e) {
     setMessage(" ");
-    console.log("resedeer isfileuplosizesizesizead>>", e.target.files[0].size+"ooooooooooo"+id);
 
     if (e.target.files[0].size < 100000) {
-      
-
       //check for file, must be below 100kb
-      setSyllabusFiles({...syllabusFile, fileData: e.target.files[0], subID: id });
-     
+      setSyllabusFiles({
+        ...syllabusFile,
+        fileData: e.target.files[0],
+        subID: id,
+      });
 
       let formData = new FormData();
 
@@ -141,12 +104,11 @@ const s=userData.data.allocateSubject
 
       if (syllabusFile.fileData) {
         const isFileUpload = await setSyllabusFile(formData);
-        console.log("resedeer isfileupload>>", isFileUpload);
 
         if (isFileUpload.status === 200) {
           setCountForSylUpload(countForSylUpload + 1);
           setSuccess("Syllabus Upload Successfully");
-          setSyllabusFile({...syllabusFile,fileData:null})
+          setSyllabusFile({ ...syllabusFile, fileData: null });
         }
       } else {
         setMessage("Try Once Again");
@@ -158,104 +120,96 @@ const s=userData.data.allocateSubject
 
   return (
     <>
-           <div className="sub-heading">
-                <div>Subject</div>
-              </div>
-              <div>
-                <div className="container row-cols-5 fl-row"></div>
-                <section className="cms-table">
-                  <div className="cms-table">
-                    <h3 className="op-error">{message}</h3>
-                    <h3 className="op-success">{success}</h3>
-                    <table className="table table-striped">
-                      <thead className="bg-light">
-                        <tr>
-                          <th scope="col">Sr. No.</th>
-                          <th scope="col">Subject ID</th>
-                          <th scope="col">Name</th>
-                          <th scope="col">Semester</th>
-                          <th scope="col">Lectured done</th>
-                          <th scope="col">Syllabus Upload Status</th>
-                          <th scope="col">Download / Delete</th>
+      <div className="sub-heading">
+        <div>Subject</div>
+      </div>
+      <div>
+        <div className="container row-cols-5 fl-row"></div>
+        <section className="cms-table">
+          <div className="cms-table">
+            <h3 className="op-error">{message}</h3>
+            <h3 className="op-success">{success}</h3>
+            <table className="table table-striped">
+              <thead className="bg-light">
+                <tr>
+                  <th scope="col">Sr. No.</th>
+                  <th scope="col">Subject ID</th>
+                  <th scope="col">Name</th>
+                  <th scope="col">Semester</th>
+                  <th scope="col">Lectured done</th>
+                  <th scope="col">Syllabus Upload Status</th>
+                  <th scope="col">Download / Delete</th>
 
-                          <th scope="col">Upload</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {subjects.map((item, index) => {
-                          console.log(",,,,,,,,,,,",isUpload);
-                          console.log(">>>>>",subjects);
-                          return (
-                            <>
-                              <tr>
-                                <td scope="row">{++index}</td>
-                                <td>{item.subID}</td>
+                  <th scope="col">Upload</th>
+                </tr>
+              </thead>
+              <tbody>
+                {subjects.map((item, index) => {
+                  console.log(",,,,,,,,,,,", isUpload);
+                  console.log(">>>>>", subjects);
+                  return (
+                    <>
+                      <tr>
+                        <td scope="row">{++index}</td>
+                        <td>{item.subID}</td>
 
-                                <td>{item.name}</td>
+                        <td>{item.name}</td>
 
-                                <td>{item.sem.toUpperCase()}</td>
-                                <td>{item.lec}</td>
-                                <td>
-                                  {isUpload[--index]
-                                    ? "Uploaded"
-                                    : "Not Upload"}
-                                </td>
+                        <td>{item.sem.toUpperCase()}</td>
+                        <td>{item.lec}</td>
+                        <td>{isUpload[--index] ? "Uploaded" : "Not Upload"}</td>
 
-                                <td>
-                                  <a
-                                    href={`data:application/pdf;base64,${toBase64(
-                                      pdfFile
-                                    )}`}
-                                    download
-                                  >
-                                    <button
-                                      onClick={() =>
-                                        operationFun("download", item.subID)
-                                      }
-                                      className="btn btn-warning"
-                                    >
-                                      <i className="bi bi-file-earmark-arrow-down-fill"></i>{" "}
-                                    </button>
-                                  </a>
+                        <td>
+                          <a
+                            href={`data:application/pdf;base64,${toBase64(
+                              pdfFile
+                            )}`}
+                            download
+                          >
+                            <button
+                              onClick={() =>
+                                operationFun("download", item.subID)
+                              }
+                              className="btn btn-warning"
+                            >
+                              <i className="bi bi-file-earmark-arrow-down-fill"></i>{" "}
+                            </button>
+                          </a>
 
-                                  <button
-                                    onClick={() =>
-                                      operationFun("delete", item.subID,item.name)
-                                    }
-                                    className="btn btn-danger zoom"
-                                  >
-                                    <i className="bi bi-trash-fill "></i>
-                                  </button>
-                                </td>
+                          <button
+                            onClick={() =>
+                              operationFun("delete", item.subID, item.name)
+                            }
+                            className="btn btn-danger zoom"
+                          >
+                            <i className="bi bi-trash-fill "></i>
+                          </button>
+                        </td>
 
-                                <td>
-                                  <label for="file-input">
-                                    <i
-                                      class="bi bi-file-earmark-arrow-up-fill zoom "
-                                      htmlFor="upload"
-                                    ></i>
-                                  </label>
+                        <td>
+                          <label for="file-input">
+                            <i
+                              class="bi bi-file-earmark-arrow-up-fill zoom "
+                              htmlFor="upload"
+                            ></i>
+                          </label>
 
-                                  <input
-                                    id="file-input"
-                                    type="file"
-                                    accept="application/pdf"
-                                    onChange={(e) =>
-                                      onChangeHandler(item.subID, e)
-                                    }
-                                    
-                                  />
-                                </td>
-                              </tr>
-                            </>
-                          );
-                        })}
-                      </tbody>
-                    </table>
-                  </div>
-                </section>
-              </div>
-           
+                          <input
+                            id="file-input"
+                            type="file"
+                            accept="application/pdf"
+                            onChange={(e) => onChangeHandler(item.subID, e)}
+                          />
+                        </td>
+                      </tr>
+                    </>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
     </>
   );
 }

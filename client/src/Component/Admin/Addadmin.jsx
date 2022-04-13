@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { addAdminDetails, getAllStudent,checkMail } from "../../Api/adminApi";
-import studentValidation from "../Validations/StudentValidation";
+import { addAdminDetails,checkMail } from "../../Api/adminApi";
+
 import AdminValidation from "../Validations/AdminValidation";
 
-import Menu from "./menu.jsx";
+
 import { check } from "../Validations/Utility";
 
 export default function Student() {
@@ -97,6 +97,8 @@ export default function Student() {
   }
   
 
+
+  //this function will call on uploading file
   async function onphotoChangeHandler(e) {
 
     setMessageWarn('');
@@ -190,9 +192,6 @@ console.log(adminInfo)
       setSuccess("");
     }
   };
-
-  //For Hiding and Showing Student Form
-  
 
   return (
     <>

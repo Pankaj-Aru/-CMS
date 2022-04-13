@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { useHistory } from "react-router-dom"
-import { Link, Redirect } from "react-router-dom/cjs/react-router-dom.min"
+import {  Redirect } from "react-router-dom/cjs/react-router-dom.min"
 import "../Assets/Css/pageNotFound.css"
 
 export default function PageNotFound(){
@@ -11,12 +11,10 @@ export default function PageNotFound(){
 
 	},[loginPage])
 
-	let history=new useHistory()
+	
 
 	function setLogin(){
-		// setLoginPage(true)
-		// history.push("./")
-	return 	<Redirect to="./"/>
+		window.href='./'
 	}
 
 

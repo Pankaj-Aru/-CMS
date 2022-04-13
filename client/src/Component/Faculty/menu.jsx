@@ -22,23 +22,24 @@ export default function FMenu() {
   });
 
   useEffect(async () => {
-    const info = JSON.parse(localStorage.getItem("userPersonalDetail"));
-    // console.log(">>>?????userPersonalDetails", info);
 
-   setUser({fPRN:info.fPRN, 
+    async function temp(){
 
-   fdept:info.fdept,
-
-   femail:info.femail,
-
-   fmob:info.fmob,
-   fname:info.fname,
-   fpic:info.fpic.data.data
-  })
-  console.log(">>>?????user", user);
-
-setImg(info.fpic.data)
-console.log(img)
+      const info = JSON.parse(localStorage.getItem("userPersonalDetail"));
+      setUser({fPRN:info.fPRN, 
+    fdept:info.fdept,
+    femail:info.femail,
+    fmob:info.fmob,
+    fname:info.fname,
+    fpic:info.fpic.data.data
+   })
+ 
+ 
+ setImg(info.fpic.data)
+ 
+    }
+    temp();
+ 
 
   }, []);
 
@@ -58,10 +59,6 @@ function logoutFun(){
  localStorage.clear()
 
  window.location.href='/';
-
- 
-
-
 }
 
 

@@ -1,11 +1,11 @@
-import "./adminMenu.css";
+import "../../Assets/Css/adminMenu.css";
 
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Buffer } from "buffer";
-import {  useHistory } from "react-router-dom";
 
-// import { takeDepartment } from "../Validations/Utility";
+
+
 export default function FMenu() {
   const [img, setImg] = useState([]);
 

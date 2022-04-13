@@ -4,15 +4,14 @@ import {
   checkMail,
   getAllFaculty,
 } from "../../Api/adminApi";
-// import "../../Assets/Css/form.css";
-// import { Buffer } from "buffer";
+
 import facultyValidation from "../Validations/FacultyValidation";
 import FacultyTableFormat from "./FacultyTableFormat.jsx";
-import Menu from "./menu.jsx";
+
 import { check } from "../Validations/Utility";
-import { Redirect } from "react-router-dom";
+
 import xlsx from "json-as-xlsx";
-import { Link } from "react-router-dom";
+
 export default function Faculty() {
   const [login, setLogin] = useState({
     isLogin: "",
@@ -53,17 +52,23 @@ export default function Faculty() {
 
   // Here, useEffect will operate as this Component render at first time  and then as count changes
 
-  useEffect(async () => {
-    const isCheck = await check("admin");
-    setCount(isCheck);
-    setLogin(isCheck);
+  useEffect( () => {
 
-    if (isCheck) {
-      const temp = await getAllFaculty();
-      console.log("amskalksdks", login);
+   async  function temp(){
+      const isCheck = await check("admin");
+      setCount(isCheck);
+      setLogin(isCheck);
+  
+      if (isCheck) {
+        const temp = await getAllFaculty();
+        console.log("amskalksdks", login);
+  
+        setAllFacultyData(temp.data);
+      }
 
-      setAllFacultyData(temp.data);
     }
+    temp()
+ 
   }, [count]);
 
   //============================================================================================================
@@ -149,7 +154,7 @@ export default function Faculty() {
 
     const file = await e.target.files[0];
     const fileSize = await e.target.files[0].size;
-    console.log("ansklndjlanslnd", e.target.files[0]);
+    
 
     if (
       (file.type === "image/jpeg" ||
@@ -161,7 +166,7 @@ export default function Faculty() {
       setFacultyInfo({ ...facultyInfo, fpic: file });
     } else {
       setFacultyInfo({ ...facultyInfo, fpic: null });
-      console.log("ansklndjlanslnd");
+     
       setMessageWarn(
         "image should be JPEG / JPG / PNG (Format)  and Below 50kb (Size) "
       );
@@ -169,7 +174,7 @@ export default function Faculty() {
   }
 
   function IncreaseCount() {
-    console.log("IncreaseCount>>", IncreaseCount);
+    
     setCount(count + 1);
   }
 
@@ -212,13 +217,13 @@ export default function Faculty() {
       const isEmailValid = await checkMail(facultyInfo.femail);
 
       if (isEmailValid.status === 200) {
-        console.log("sucessss");
+        
         setEmailMessage("op-success");
        
         helper = true;
-        console.log("sucessss", helper);
+        
       } else {
-        console.log("gayyyyaaa");
+        
         helper = false;
         const temp = facultyInfo.femail;
         setEmailMessage("op-error");
@@ -234,8 +239,7 @@ export default function Faculty() {
       setMessageWarn(null);
       let formData = new FormData();
 
-      console.log("Final Faculty Info >", facultyInfo);
-
+      
       for (var key in facultyInfo) {
         formData.append(key, facultyInfo[key]);
       }

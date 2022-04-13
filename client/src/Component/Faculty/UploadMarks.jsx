@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 // import { checkLogger, getAllSubject } from "../../Api/adminApi";
 import { getAcademicOfStud, setAcademicData } from "../../Api/facultyApi";
 import { check } from "../Validations/Utility";
-import Menu from "./menu";
+
 import xlsx from "json-as-xlsx";
 export default function UploadMarks(props) {
   const [message, setMessage] = useState("");
@@ -28,8 +28,6 @@ export default function UploadMarks(props) {
       if (q) {
         setSubjects(q);
       }
-
-      
     }
   }, []);
 
@@ -58,23 +56,18 @@ export default function UploadMarks(props) {
   };
 
   async function setAcademicDataFun() {
-    console.log(">>>>>>", stateStudentMarks);
-
     const isAcademicData = await setAcademicData(stateStudentMarks);
 
-    console.log("server respone isAcademicData", isAcademicData.data.message);
     setMessage(isAcademicData.data.message);
   }
 
   function update(e) {
-    
-    if(e.target.value!==" "){
-
-
+    if (e.target.value !== " ") {
       const temp = e.target.value;
-      const item = subjects.filter((item) => (item.name === temp ? item : ""))[0];
-    
-  
+      const item = subjects.filter((item) =>
+        item.name === temp ? item : ""
+      )[0];
+
       setSelectSub({
         subID: item.subID,
         name: item.name,
@@ -82,9 +75,7 @@ export default function UploadMarks(props) {
         dept: item.dept,
         lec: item.lec,
       });
-
     }
-   
   }
 
   function onChangeHandler(prn, e) {
@@ -96,12 +87,12 @@ export default function UploadMarks(props) {
       )
     );
 
-    console.log("jaskjdakj>", name);
+ 
   }
 
   const getList = async () => {
     if (selectSub.name !== "") {
-      console.log("server resp>>", `${selectSub.sem}-${selectSub.dept}`);
+     
 
       var temp = `${selectSub.sem}-${selectSub.dept}`;
       const academicOfStu = await getAcademicOfStud(temp);
@@ -120,8 +111,7 @@ export default function UploadMarks(props) {
             exam: temp[0].exam,
             attendance: temp[0].attendance,
           };
-          console.log("seitem   esp>>", temp1);
-          tempObj.push(temp1);
+         tempObj.push(temp1);
         });
 
         setStateStudentMarks(tempObj);
@@ -135,9 +125,8 @@ export default function UploadMarks(props) {
 
   function extractSub(item) {
     for (const keys of Object.keys(item)) {
-      console.log("inexxtracttt", keys);
-      if (keys === "subjects") {
-        console.log("inexxtracttt", item[keys]);
+           if (keys === "subjects") {
+        
         return Object.values(item[keys]);
       }
     }
@@ -145,7 +134,6 @@ export default function UploadMarks(props) {
 
   return (
     <>
-    
       <div className="sub-heading">
         <div>Upload Marks</div>
       </div>
@@ -162,13 +150,17 @@ export default function UploadMarks(props) {
             onChange={update}
           >
             <option value="Select Subject">Select Subject</option>
-            {subjects.length>0?subjects.map((item, index) => {
-              return (
-                <>
-                  <option value={item.name}>{item.name}</option>
-                </>
-              );
-            }):<option value={''}>Subjects are not Allocate Yet</option>}
+            {subjects.length > 0 ? (
+              subjects.map((item, index) => {
+                return (
+                  <>
+                    <option value={item.name}>{item.name}</option>
+                  </>
+                );
+              })
+            ) : (
+              <option value={""}>Subjects are not Allocate Yet</option>
+            )}
           </select>
         </div>
         <div></div>
@@ -310,8 +302,6 @@ export default function UploadMarks(props) {
           </tbody>
         </table>
       </div>
-
-   
     </>
   );
 }

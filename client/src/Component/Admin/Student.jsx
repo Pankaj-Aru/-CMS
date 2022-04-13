@@ -17,21 +17,7 @@ export default function Student() {
   const [count, setCount] = useState(1);
   const [emailMessage, setEmailMessage] = useState("");
   const [validEmail, setValidEmail] = useState("");
-  const [studentInfoReset, setStudentInfoReset] = useState({
-    sname: "",
-    semail: "",
-    saddress: "",
-    sstate: "",
-    spin: "",
-    sdob: "",
-    sgender: "",
-    sdept: "",
-    ssemester: "",
-    smob: "",
-    spic: "",
-    spass: "",
-    confirmPass: "",
-  });
+ 
 
   const [studentInfo, setStudentInfo] = useState({
     sname: "",
@@ -56,14 +42,21 @@ export default function Student() {
 
   let allStudent = {};
   useEffect(async () => {
-    const k = await check("admin");
-    if (k) {
-      allStudent = await getAllStudent();
-      setAllStudentData(allStudent.data);
-      console.log("0LLLLL", allStudent.data);
-    }
 
-    console.log("0LLkkkkkkkLLL", allStudent.data);
+    async function temp(){
+
+      const k = await check("admin");
+      if (k) {
+        allStudent = await getAllStudent();
+        setAllStudentData(allStudent.data);
+        
+      }
+  
+
+    }
+    temp()
+    
+    
   }, [count]);
 
   function IncreaseCount() {

@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { Redirect } from "react-router-dom";
 import { getOneFaculty } from "../../Api/adminApi";
-// import { getAllStudent, postAttendance } from "../../Api/adminApi";
+
 import { getAcademicOfStud, postAttendance } from "../../Api/facultyApi";
-import Menu from "./menu";
+
 import { check } from "../Validations/Utility";
 
 export default function StudentAttendance(props) {
@@ -16,17 +16,19 @@ export default function StudentAttendance(props) {
   const [attenData, setAttenData] = useState({});
   const [isSubmit, setIsSuubmit] = useState(false);
 
-  // <+++++++++++++++++++++++==================================================>
-
   useEffect(async () => {
-    if (await check("faculty")) {
-      setSubjects(
-        JSON.parse(localStorage.getItem("userPersonalDetail")).allocateSubject
-      );
-    } else {
-      localStorage.clear();
-      window.href = "./";
+    async function temp() {
+      if (await check("faculty")) {
+        setSubjects(
+          JSON.parse(localStorage.getItem("userPersonalDetail")).allocateSubject
+        );
+      } else {
+        localStorage.clear();
+        window.href = "./";
+      }
     }
+
+    temp();
   }, []);
 
   function update(e) {
@@ -35,36 +37,26 @@ export default function StudentAttendance(props) {
         item.subID === e.target.value ? item : ""
       );
       setAttenData(object[0]);
-
-      console.log("attenData>>>", attenData);
     } else {
       setAttenData({ set: "" });
-      console.log("attenDataelsee>>>", attenData);
     }
   }
 
   const showStudent = async () => {
-    console.log("in showStudent>>>>>>>>>>>>attenData>>>>>>>>", attenData);
     setMsgSerRespo("");
     if (attenData.sem && attenData.name && attenData.dept) {
-      console.log("Dropdown select Properly");
       setMessage("");
 
       const temp = await getAcademicOfStud(
         `${attenData.sem}-${attenData.dept}`
       );
       setAllStudent(temp.data);
-      console.log("Dropdown select temp", temp);
 
       setIsSuubmit(true);
     } else {
       setMessage("Select Subject");
       setAllStudent({});
-
-      console.log("Dropdown Not select Properly");
     }
-
-    console.log("allStudent>>>>>>>>>>>>>>>>>>>>", allStudent);
   };
 
   var allPresent = [];
@@ -73,38 +65,29 @@ export default function StudentAttendance(props) {
     if (allPresent.includes(id)) {
       const temp = allPresent;
       allPresent = temp.filter((ele) => ele !== id);
-      console.log("allPresent>>>>>>", allPresent);
     } else {
       allPresent.push(e.target.id);
     }
-
-    console.log("not present>>>>");
-
-    console.log("allPresent>>>>", allPresent);
   };
 
   const setAttendance = async () => {
     const dataForBackend = { speci: "", attendance: "" };
     dataForBackend["speci"] = attenData;
     dataForBackend["attendance"] = allPresent;
-    console.log("assss>>>>>");
+
     setAllStudent([]);
     setIsSuubmit(false);
-    console.log("lenghthhhhhh>>>>>", allStudent.length);
 
     const respPostAttendance = await postAttendance(dataForBackend);
-    console.log("assss>>>>>", dataForBackend);
 
     if (respPostAttendance.status === 200) {
       setMsgSerRespo("Attendance Submit Successfully");
       const userPRN = JSON.parse(localStorage.getItem("userData")).PRN;
 
       const data = await getOneFaculty(userPRN);
-      console.log("PRNNNNNN", data.data);
+
       localStorage.setItem("userPersonalDetail", JSON.stringify(data.data));
     }
-
-    console.log("respPostAttendance>>>>>", respPostAttendance);
   };
   return (
     <>

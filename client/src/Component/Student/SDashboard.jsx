@@ -1,4 +1,4 @@
-import "./SDashboard.css";
+import "../../Assets/Css/SDashboard.css";
 import { Buffer } from "buffer";
 import "../../Assets/Css/common.css";
 import Menu from "./menu.jsx";
@@ -7,12 +7,12 @@ import { check, takeDepartment } from "../Validations/Utility";
 import { getMyAcademicInfo, getMyLecture } from "../../Api/studentApi.js";
 import { getOneStudent } from "../../Api/adminApi";
 import { Link } from "react-router-dom";
-import PageNotFound from "../pageNotFound";
+
 import { getnotifications, getOneSyllabus } from "../../Api/facultyApi";
 import Line from "./Line.jsx";
 import Pie from "./Pie.jsx";
 import Donut from "./Donut.jsx";
-var data;
+
 export default function Dashboard() {
   const [subjects, setSubjects] = useState([]);
   const [pdfFile, setpdfFile] = useState("");
@@ -25,7 +25,7 @@ export default function Dashboard() {
 
   const [img, setImg] = useState([]);
   const [count, setCount] = useState(false);
-  const [att, setAtt] = useState(false);
+ 
 
   const attendanceHead = [
     "Subject",
@@ -45,44 +45,47 @@ export default function Dashboard() {
   ];
 
   useEffect(async () => {
-    var c = await check("student");
-    setCount(c);
-    if (c) {
-      const s = JSON.parse(localStorage.getItem("userData"));
+    async function temp() {
+      var c = await check("student");
+      setCount(c);
+      if (c) {
+        const s = JSON.parse(localStorage.getItem("userData"));
 
-      if (s) {
-        const myDetail = await getOneStudent(s.PRN);
+        if (s) {
+          const myDetail = await getOneStudent(s.PRN);
 
-        if (myDetail.status === 200) {
-          setMyDetails(myDetail.data);
-          setImg(myDetail.data.spic.data.data);
+          if (myDetail.status === 200) {
+            setMyDetails(myDetail.data);
+            setImg(myDetail.data.spic.data.data);
 
-          const notiData = await getnotifications(
-            `${myDetail.data.sdept},${myDetail.data.ssemester}`
-          );
-
-          if (notiData.status === 200) {
-            localStorage.setItem(
-              "notiFicationData",
-              JSON.stringify(notiData.data)
+            const notiData = await getnotifications(
+              `${myDetail.data.sdept},${myDetail.data.ssemester}`
             );
 
-            // data=notiData.data;
-          }
+            if (notiData.status === 200) {
+              localStorage.setItem(
+                "notiFicationData",
+                JSON.stringify(notiData.data)
+              );
 
-          const academicData = await getMyAcademicInfo(s.PRN);
+             
+            }
 
-          if (academicData.status === 200) {
-            setSubjects(Object.keys(academicData.data.subjects));
+            const academicData = await getMyAcademicInfo(s.PRN);
 
-            setSubjectsValues(Object.values(academicData.data.subjects));
+            if (academicData.status === 200) {
+              setSubjects(Object.keys(academicData.data.subjects));
+
+              setSubjectsValues(Object.values(academicData.data.subjects));
+            }
           }
         }
+      } else {
+        localStorage.clear();
+        window.href = "./";
       }
-    } else {
-      localStorage.clear();
-      window.href = "./";
     }
+    temp();
   }, []);
 
   function toBase64(sdata) {
@@ -98,25 +101,19 @@ export default function Dashboard() {
 
     let arrayyy = [];
     subjects.map(async (item, i) => {
-
-      // console.log("......",item)
+      
       const myLectureData = await getMyLecture(item);
 
-      
-      
-      if (myLectureData.status === 200 ) {
+      if (myLectureData.status === 200) {
         console.log("ooooo", myLectureData.data);
-        setAttendMyDetails(prev=>[
-          ...prev,
-          myLectureData.data,
-        ]);
+        setAttendMyDetails((prev) => [...prev, myLectureData.data]);
       }
 
-      // console.log("iiiiiiiiii");
+    
     });
 
     setAttendMyDetails(arrayyy);
-    console.log("iiiiiiiiii", myAttendDetails);
+    
 
     attendance ? setAttendance(false) : setAttendance(true);
   }
@@ -161,7 +158,7 @@ export default function Dashboard() {
                   <br />
                   <span className="text-shadow">
                     {myDetails.sname
-                      ?`Hello ${myDetails.sname.split(" ")[1].toUpperCase()}`
+                      ? `Hello ${myDetails.sname.split(" ")[1].toUpperCase()}`
                       : ""}
                   </span>{" "}
                   <br />
@@ -241,21 +238,21 @@ export default function Dashboard() {
                       </thead>
                       <tbody>
                         {myAttendDetails.map((item, index) => {
-                       {/*   console.log("subjectsValues", subjectsValues);
+                          {
+                            /*   console.log("subjectsValues", subjectsValues);
                           console.log("subjects", subjects);
-                          console.log("myAttendDetails", myAttendDetails); */} 
-                         
-                         if(subjectsValues[index]===null){
-                           return
-                         }
+                          console.log("myAttendDetails", myAttendDetails); */
+                          }
+
+                          if (subjectsValues[index] === null) {
+                            return;
+                          }
 
                           const e = subjectsValues[index].attendance;
 
                           const att =
                             (subjectsValues[index].attendance / item.sub.lec) *
                             100;
-
-                         
 
                           return (
                             <>
@@ -322,7 +319,13 @@ export default function Dashboard() {
                               <td>{item.first}</td>
                               <td>{item.second}</td>
                               <td>{item.exam}</td>
-                              <td>{item.exam>30?"Excellent":item.exam<20?"Bad":"Good"}</td>
+                              <td>
+                                {item.exam > 30
+                                  ? "Excellent"
+                                  : item.exam < 20
+                                  ? "Bad"
+                                  : "Good"}
+                              </td>
                             </tr>
                           </>
                         );

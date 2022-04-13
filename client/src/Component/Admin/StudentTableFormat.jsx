@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import {
   deleteOneStudent,
@@ -15,10 +14,8 @@ import { takeDepartment } from "../Validations/Utility";
 export default function TableFormat(props) {
   const [editform, setEditForm] = useState(false);
   const [searchItem, setSearchItem] = useState("");
- 
-  const [message, setMessage] = useState("");
 
-  
+  const [message, setMessage] = useState("");
 
   const [success, setSuccess] = useState("");
 
@@ -41,7 +38,6 @@ export default function TableFormat(props) {
     confirmPass: "",
   });
   var table_details = props.data;
-  
 
   var table_head = [
     "Sr.No.",
@@ -55,36 +51,26 @@ export default function TableFormat(props) {
   ];
 
   const deleteStudent = async (item) => {
-let text=`Deleting student ${item.sname} ,\n Are you sure ? `
-    if(window.confirm(text)==true){
-
-
+    let text = `Deleting student ${item.sname} ,\n Are you sure ? `;
+    if (window.confirm(text) == true) {
       const deleteData = await deleteOneStudent(item.sPRN);
 
-      if(deleteData.status == 200){
-
+      if (deleteData.status == 200) {
         props.IncreaseCount();
-        setSuccess(`Deleted ${item.sname} , PRN ${item.sPRN} delete from Database `)
-      }else{
-        setMessage(`Problem while deleting ${item.sname}, PRN ${item.sPRN} delete from Database `)
+        setSuccess(
+          `Deleted ${item.sname} , PRN ${item.sPRN} delete from Database `
+        );
+      } else {
+        setMessage(
+          `Problem while deleting ${item.sname}, PRN ${item.sPRN} delete from Database `
+        );
       }
-     
-  
-  
-
     }
-
-    
-   
-    
   };
 
   async function editStudent(item) {
-   
+    var picData = await getOneStudent(item.sPRN);
 
-   var picData = await getOneStudent(item.sPRN);
-
-    
     setEditForm(true);
     setSuccess("");
     setMessage("");
@@ -97,9 +83,6 @@ let text=`Deleting student ${item.sname} ,\n Are you sure ? `
     setEditForm(false);
   };
 
- 
- 
-
   function onChangeHandler(e) {
     setMessage("");
     setSuccess("");
@@ -107,21 +90,13 @@ let text=`Deleting student ${item.sname} ,\n Are you sure ? `
     setStudentInfo({ ...studentInfo, [e.target.name]: e.target.value });
   }
 
-
-
-  //Converting Image Binary Data base 64 bit Data 
+  //Converting Image Binary Data base 64 bit Data
   function toBase64(sdata) {
     return Buffer.from(
       String.fromCharCode.apply(null, new Uint8Array(sdata)),
       "binary"
     ).toString("base64");
   }
-
- 
-
-
-
-
 
   // Student Adding in Databasr After Validation
   const setSubmitData = async (e) => {
@@ -145,7 +120,6 @@ let text=`Deleting student ${item.sname} ,\n Are you sure ? `
     ];
 
     for (const key in Object.keys(valideData)) {
-     
       if (Object.values(valideData)[key] === false) {
         ++isValid;
         isString = isString + nameArray[key] + ", ";
@@ -163,7 +137,6 @@ let text=`Deleting student ${item.sname} ,\n Are you sure ? `
       //sending to Axios
       const isStudentUpdate = await updateStudent(formData);
 
-     
       setSuccess("The Student information Update Successfully");
       const get = await props.IncreaseCount();
       var t =
@@ -215,13 +188,7 @@ let text=`Deleting student ${item.sname} ,\n Are you sure ? `
 
           {<h5 className="op-error">{message}</h5>}
 
-          {
-            <h5 className="op-success"
-              
-            >
-              {success}
-            </h5>
-          }
+          {<h5 className="op-success">{success}</h5>}
           <div className="row jumbotron">
             <div className="col-sm-2 form-group">
               <label for="name-f">Student PRN</label>
@@ -450,13 +417,18 @@ let text=`Deleting student ${item.sname} ,\n Are you sure ? `
           </div>
         </div>
       </section>
-       <h3 className="op-error">{message}</h3>
-       <h3 className="op-success">{success}</h3>
+      <h3 className="op-error">{message}</h3>
+      <h3 className="op-success">{success}</h3>
       <div className="cms-table">
-      <div className="col-sm-4  btn-search ">
-                          
-                          <input type="text" className="form-control "  onChange={(e)=>setSearchItem(e.target.value)} value={searchItem} placeholder="Search..." />
-                        </div>
+        <div className="col-sm-4  btn-search ">
+          <input
+            type="text"
+            className="form-control "
+            onChange={(e) => setSearchItem(e.target.value)}
+            value={searchItem}
+            placeholder="Search..."
+          />
+        </div>
         <table className="table table_striped">
           <thead className="bg-light">
             <tr>
@@ -472,61 +444,64 @@ let text=`Deleting student ${item.sname} ,\n Are you sure ? `
             </tr>
           </thead>
           <tbody>
-            {table_details.filter((val)=>{
+            {table_details
+              .filter((val) => {
+                if (searchItem === "") {
+                  return val;
+                } else if (val.sPRN.includes(searchItem.toLowerCase())) {
+                  return val;
+                } else if (val.sname.includes(searchItem.toLowerCase())) {
+                  return val;
+                } else if (
+                  val.sdept.toLowerCase().includes(searchItem.toLowerCase())
+                ) {
+                  return val;
+                } else if (
+                  val.ssemester.toLowerCase().includes(searchItem.toLowerCase())
+                ) {
+                  return val;
+                } else if (
+                  val.semail.toLowerCase().includes(searchItem.toLowerCase())
+                ) {
+                  return val;
+                }
+              })
+              .map((item, index) => {
+                return (
+                  <>
+                    <tr key={index}>
+                      <td>{++index}</td>
 
+                      <td>{item.sPRN}</td>
 
-if(searchItem===""){
-             return  val;
-           }else if(val.sPRN.includes(searchItem.toLowerCase())){
-              return val
-           }else if(val.sname.includes(searchItem.toLowerCase())){
-             return val
-           }else if(val.sdept.toLowerCase().includes(searchItem.toLowerCase())){
-             return val
-           }else if(val.ssemester.toLowerCase().includes(searchItem.toLowerCase())){
-             return val
-           }else if(val.semail.toLowerCase().includes(searchItem.toLowerCase())){
-             return val
-           }
+                      <td>{item.sname}</td>
+                      <td>{takeDepartment(item.sdept)}</td>
+                      <td>{item.semail}</td>
+                      <td>{item.ssemester.toUpperCase()}</td>
+                      <td>{item.sstate}</td>
 
+                      <td>
+                        <button
+                          onClick={() => editStudent(item)}
+                          className="btn btn-warning"
+                          name={item._id}
+                        >
+                          <i className="bi bi-pencil-square"></i> View & Edit
+                        </button>
 
-
-            }).map((item, index) => {
-              return (
-                <>
-                  <tr key={index}>
-                    <td>{++index}</td>  
-
-                    <td>{item.sPRN}</td>
-
-                    <td>{item.sname}</td>
-                    <td>{takeDepartment(item.sdept)}</td>
-                    <td>{item.semail}</td>
-                    <td>{item.ssemester.toUpperCase()}</td>
-                    <td>{item.sstate}</td>
-
-                    <td>
-                      <button
-                        onClick={() => editStudent(item)}
-                        className="btn btn-warning"
-                        name={item._id}
-                      >
-                        <i className="bi bi-pencil-square"></i> View & Edit
-                      </button>
-
-                      <button
-                        onClick={(e) => deleteStudent(item)}
-                        className="btn btn-danger"
-                        name={item._id}
-                      >
-                        {" "}
-                        <i className="bi bi-trash-fill"></i> 
-                      </button>
-                    </td>
-                  </tr>
-                </>
-              );
-            })}
+                        <button
+                          onClick={(e) => deleteStudent(item)}
+                          className="btn btn-danger"
+                          name={item._id}
+                        >
+                          {" "}
+                          <i className="bi bi-trash-fill"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  </>
+                );
+              })}
           </tbody>
         </table>
       </div>

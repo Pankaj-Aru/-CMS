@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import CountUp from "react-countup";
 import { check } from "../Validations/Utility";
-import Menu from "./menu";
+
 export default function Fdashboard() {
   const [lastLogin, setLastLogin] = useState({ date: "", time: "" });
 
@@ -27,7 +27,7 @@ export default function Fdashboard() {
       time = `${time[0]}:${time[1]} AM`;
     }
 
-    console.log("first,", time);
+   
     setLastLogin({ date, time });
   }, []);
 

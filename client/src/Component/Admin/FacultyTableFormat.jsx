@@ -55,7 +55,7 @@ export default function TableFormat(props) {
     temp.data.map((item, index) => {
       const keys = Object.keys(item);
       const val = Object.values(item);
-      var arrayBig = [];
+      
 
       for (const key in val) {
         if (typeof val[key] === "object") {

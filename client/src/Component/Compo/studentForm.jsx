@@ -12,7 +12,7 @@ export default function Student(props) {
   const [form, setForm] = useState(false);
   const [messageWarn, setMessageWarn] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [allStudentData, setAllStudentData] = useState([]);
+  
   const [count, setCount] = useState(1);
   const [emailMessage, setEmailMessage] = useState("");
   const [validEmail, setValidEmail] = useState("");

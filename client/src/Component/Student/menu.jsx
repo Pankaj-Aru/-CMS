@@ -1,23 +1,23 @@
-import "./menu.css";
-import Logo from "../../Assets/Images/logo.jpeg";
-import "./SDashboard.css";
+import "../../Assets/Css/menu.css";
+
+import "../../Assets/Css/SDashboard.css";
+
 import { Buffer } from "buffer";
 
 import { useEffect, useState } from "react";
 import { getOneNotification } from "../../Api/facultyApi";
 export default function SMenu(props) {
   const [notificationData, setNotificationData] = useState([
-    {file:'' ,title: " ", publisher: "No Notice " },
+    { file: "", title: " ", publisher: "No Notice " },
   ]);
 
   const [pdfFile, setpdfFile] = useState("");
 
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("notiFicationData"));
-if(data){
-  setNotificationData(data);
-}
-    
+    if (data) {
+      setNotificationData(data);
+    }
   }, []);
 
   function toBase64(sdata) {
@@ -27,19 +27,16 @@ if(data){
     ).toString("base64");
   }
   async function onChangeHandler(id) {
-   
-
     const dataOneNotificaton = await getOneNotification(id);
 
-      console.log("ll>>>>>", pdfFile);
-      if (dataOneNotificaton.status === 200) {
-        setpdfFile(dataOneNotificaton.data.data.data);
-        // setCou('download')
-      } else {
-        setpdfFile('')
-        console.log("llNot dofundd>", pdfFile);
-        alert("File Not Found,Kindly Contact to Publisher");
-      }
+    if (dataOneNotificaton.status === 200) {
+      setpdfFile(dataOneNotificaton.data.data.data);
+
+    } else {
+      setpdfFile("");
+   
+      alert("File Not Found,Kindly Contact to Publisher");
+    }
   }
 
   return (
