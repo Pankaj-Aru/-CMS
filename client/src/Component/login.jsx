@@ -38,6 +38,7 @@ function Login(props) {
   function loggerinfo(e) {
     setMessage(false);
 
+    
     setLoggerInfo({ ...loggerInfo, [e.target.name]: e.target.value });
   }
 

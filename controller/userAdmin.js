@@ -811,10 +811,10 @@ export const deleteOneFaculty = async (req, res) => {
     const isFacultyDelete = await FacultyInfoModel.deleteOne(id);
     const isAuthFacultyDelete = await authDataModel.deleteOne(ida);
     fs.unlink(`./upload/img/${req.params.id}.jpg`, (err) => {
-      console.log("error while deleting img of student >", err);
+      console.log("error while deleting img of faculty >", err);
     });
 
-    console.log("deleteOneFaculty");
+    console.log("deleteOneFaculty",isAuthFacultyDelete);
     console.log(
       "in getPic Responce from server------------<>>>",
       isFacultyDelete

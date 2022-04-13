@@ -98,7 +98,10 @@ export default function TableFormat(props) {
     if (window.confirm(text) == true) {
       const deleteData = await deleteOneFaculty(id);
 
-      if (deleteFaculty.status == 200) {
+
+console.log(">>>>>>>>>>>>>",)
+
+      if (deleteData.status == 200) {
         props.IncreaseCount();
         setSuccess(`Deleted ${name} , PRN ${id} delete from Database `);
       } else {
@@ -128,6 +131,8 @@ export default function TableFormat(props) {
 
     if (picData.status === 200) {
       setEditForm(true);
+      setSuccess("One Faculty Deleted");
+
       setImag(picData.data.fpic.data.data);
       setFacultyInfo(picData.data);
     } else {

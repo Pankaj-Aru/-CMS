@@ -116,7 +116,8 @@ export const getAllStudent = async () => {
 export const addStudentDetails = async (data) => {
   console.log("in clientside addStudentAcademicDetails>> ", data);
 
-  return await axios.post(`${usersUrl}/addStudentDetails`, data,{headers:{Autherization:token()}});
+  const p= await axios.post(`${usersUrl}/addStudentDetails`, data,{headers:{Autherization:token()}});
+  return p;
 };
 
 export const updateStudent = async (data) => {
