@@ -31,7 +31,7 @@ export default function AdminApp() {
     <>
       <BrowserRouter>
         <div className="dashboard">
-          <div className="col-lg-2">
+          <div className="conatiner">
             <Menu />
           </div>
 

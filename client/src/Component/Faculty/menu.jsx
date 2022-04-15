@@ -65,7 +65,7 @@ function logoutFun(){
 
   return (
     <>
-      <div className="nav-side-menu">
+      <div className="nav-side-menu col-lg-2">
         <div className="brand">
           
           <div className="userPic">

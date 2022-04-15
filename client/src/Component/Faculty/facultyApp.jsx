@@ -33,7 +33,7 @@ export default function Dashboard() {
       <Router>
         {count ? (
           <div className="dashboard">
-            <div className="col-lg-2">
+            <div className="conatainer">
               <Menu />
             </div>
 
