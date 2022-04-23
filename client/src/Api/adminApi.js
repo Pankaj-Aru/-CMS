@@ -6,7 +6,12 @@ const token=()=>{
   return temp
 }
 // const usersUrl = 'http://localhost:3003/users';
-const usersUrl = "http://localhost:8008";
+
+
+// const usersUrl = "http://localhost:8008" || `http://localhost:8008/${process.env.PORT}`;
+
+const usersUrl =(process.env.NODE_ENV === 'production' )? 'https://cms-2022.herokuapp.com' :"http://localhost:8008";
+
 
 //is will check login information (uername,password)
 export const checkLogger = async (data) => {
